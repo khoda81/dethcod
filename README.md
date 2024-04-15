@@ -1,4 +1,6 @@
-# Neural Network-Based Lossless Compression with Sequence-to-Sequence Transformers
+# Distributed Efficient Transformer-based Hash Compression for general Data
+
+## Neural Network-Based Lossless Compression with Sequence-to-Sequence Transformers
 
 This project explores a novel approach to lossless data compression utilizing sequence-to-sequence (seq2seq) transformers. Unlike traditional compression algorithms, which often rely on fixed heuristics or statistical methods, our approach leverages the power of neural networks to learn complex patterns in data sequences for more efficient compression and decompression.
 
