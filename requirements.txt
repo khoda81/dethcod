@@ -1,0 +1,6 @@
+datasets
+python-dotenv
+tqdm
+transformers
+typer
+wandb
