@@ -28,8 +28,7 @@ def extract_zip(zip_file_path: Path, data_folder: Path) -> list[Path]:
 def main(
     zip_link: str = "http://www.mattmahoney.net/dc/enwik8.zip",
     data_folder: Path = typer.Option(
-        Path("./dataset"),
-        exists=True,
+        Path("data/dataset"),
         file_okay=False,
         dir_okay=True,
         writable=True,
@@ -38,6 +37,8 @@ def main(
     ),
     file_name: str = "temp.zip",
 ):
+    data_folder.mkdir(parents=True, exist_ok=True)
+
     zip_file_path = download_file(zip_link, data_folder / file_name)
     extracted_files = extract_zip(zip_file_path, data_folder)
 
