@@ -38,7 +38,10 @@ def train(
     with tqdm.tqdm(data_loader) as pbar:
         for batch in pbar:
             input_ids = tokenizer(
-                batch["text"], return_tensors="pt", padding=True, truncation=True
+                batch["text"],
+                return_tensors="pt",
+                padding=True,
+                truncation=True,
             ).input_ids.to(model.device)
 
             model_output = model.forward(input_ids)

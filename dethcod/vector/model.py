@@ -64,7 +64,7 @@ class VectorCompressionModel(transformers.T5ForConditionalGeneration):
         self.pooling_layer = nn.Linear(model_dim, internal_dim)
         self.unpooling_layer = nn.Linear(token_embed_dim, model_dim)
 
-    def forward(self, input_ids):
+    def forward(self, input_ids, **kwargs):
         compressed_form = self.compress(input_ids)
 
         last_hidden_state = self.unpooling_layer.forward(compressed_form)
@@ -73,8 +73,8 @@ class VectorCompressionModel(transformers.T5ForConditionalGeneration):
         )
 
         return super().forward(
-            labels=input_ids,
             encoder_outputs=encoder_outputs,
+            **kwargs,
         )
 
     def compress(self, input_ids):
