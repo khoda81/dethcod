@@ -56,8 +56,6 @@ class VectorCompressionModel(transformers.T5ForConditionalGeneration):
     def __init__(self, config: VectorCompressionConfig):
         super().__init__(config)
 
-        self.config = config
-
         model_dim = self.encoder.config.d_model
         num_tokens, token_embed_dim = self.config.compressed_size
         internal_dim = num_tokens * token_embed_dim
