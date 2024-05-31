@@ -1,9 +1,3 @@
-import dataclasses
-from dataclasses import dataclass
-from typing import Optional, Tuple, Union
-
-import torch
-import torch.nn as nn
 import transformers
 import transformers.modeling_outputs
 
@@ -11,64 +5,4 @@ import transformers.modeling_outputs
 class DecompressionConfig(transformers.T5Config): ...
 
 
-@dataclass
-class DecompressionOutput(transformers.modeling_outputs.Seq2SeqLMOutput):
-    value_predictions: Optional[Tuple[torch.FloatTensor, ...]] = None
-
-
-class DecompressionModel(transformers.T5ForConditionalGeneration):
-    def __init__(self, config):
-        super().__init__(config)
-
-        self.critic_head = nn.Linear(config.d_model, 1)
-
-    def forward(
-        self,
-        input_ids: Optional[torch.LongTensor] = None,
-        attention_mask: Optional[torch.FloatTensor] = None,
-        decoder_input_ids: Optional[torch.LongTensor] = None,
-        decoder_attention_mask: Optional[torch.BoolTensor] = None,
-        head_mask: Optional[torch.FloatTensor] = None,
-        decoder_head_mask: Optional[torch.FloatTensor] = None,
-        cross_attn_head_mask: Optional[torch.Tensor] = None,
-        encoder_outputs: Optional[Tuple[Tuple[torch.Tensor]]] = None,
-        past_key_values: Optional[Tuple[Tuple[torch.Tensor]]] = None,
-        inputs_embeds: Optional[torch.FloatTensor] = None,
-        decoder_inputs_embeds: Optional[torch.FloatTensor] = None,
-        labels: Optional[torch.LongTensor] = None,
-        use_cache: Optional[bool] = None,
-        output_attentions: Optional[bool] = None,
-        return_dict: Optional[bool] = None,
-    ) -> Union[Tuple[torch.FloatTensor], DecompressionOutput]:
-        output = super().forward(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            decoder_input_ids=decoder_input_ids,
-            decoder_attention_mask=decoder_attention_mask,
-            head_mask=head_mask,
-            decoder_head_mask=decoder_head_mask,
-            cross_attn_head_mask=cross_attn_head_mask,
-            encoder_outputs=encoder_outputs,
-            past_key_values=past_key_values,
-            inputs_embeds=inputs_embeds,
-            decoder_inputs_embeds=decoder_inputs_embeds,
-            labels=labels,
-            use_cache=use_cache,
-            output_attentions=output_attentions,
-            output_hidden_states=True,
-            return_dict=return_dict,
-        )
-
-        last_hidden_state = output.decoder_hidden_states[-1]
-
-        return DecompressionOutput(
-            value_predictions=self.critic_head(last_hidden_state),
-            logits=output.logits,
-            past_key_values=output.past_key_values,
-            decoder_hidden_states=output.decoder_hidden_states,
-            decoder_attentions=output.decoder_attentions,
-            cross_attentions=output.cross_attentions,
-            encoder_last_hidden_state=output.encoder_last_hidden_state,
-            encoder_hidden_states=output.encoder_hidden_states,
-            encoder_attentions=output.encoder_attentions,
-        )
+class DecompressionModel(transformers.T5ForConditionalGeneration): ...
